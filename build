@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ ! -f lib/BQN.jar ]; then
+  echo "Requires BQN.jar in lib/"; exit
+fi
+if [ ! -f lib/jna-5.7.0.jar ]; then
+  echo "downloading jna-5.7.0.jar"
+  curl https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.7.0/jna-5.7.0.jar > lib/jna-5.7.0.jar
+fi
+if [ ! -f lib/jna-5.7.0-jpms.jar ]; then
+  echo "downloading jna-5.7.0-jpms.jar"
+  curl https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.7.0/jna-5.7.0-jpms.jar > lib/jna-5.7.0-jpms.jar
+fi
+rm -f BQNative.jar
+rm -rf classes
+mkdir -p classes
+javac --release 8 -classpath 'lib/*' -Xmaxerrs 1000 -d classes $(find src -name '*.java')
+cd classes
+jar cf BQNative.jar * > /dev/null
+mv BQNative.jar ../BQNative.jar
+cd ..

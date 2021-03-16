@@ -1,0 +1,1 @@
+rlwrap java -cp '*:lib/*' BQN.Main -er 'load←•JLoad"BQNative.Load"'
